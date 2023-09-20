@@ -9,15 +9,19 @@ const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const signIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
       if (response.user) {
+        setIsLoading(false);
         navigate("/");
       }
     } catch (error: unknown) {
+      setIsLoading(false);
       const newError = error as Error;
       setError(newError.message as string);
     }
@@ -55,12 +59,19 @@ const Login = () => {
               className="w-full border-2 border-gray-300 p-2 rounded-md focus:outline-none focus:ring focus:border-blue-300"
             />
           </div>
-          <div className="text-center">
+          <div className="text-center flex justify-center">
             <button
               type="submit"
-              className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
+              disabled={isLoading || !email || !password}
+              className={`bg-blue-500 text-white py-2 w-20 flex justify-center rounded-md hover:bg-blue-600 transition duration-300 ${
+                (isLoading || !email || !password) && "opacity-50"
+              }`}
             >
-              Login
+              {!isLoading ? (
+                "Login"
+              ) : (
+                <div className="animate-spin rounded-full h-4 w-4 border-t-4 border-b-4 border-white"></div>
+              )}
             </button>
           </div>
         </form>
