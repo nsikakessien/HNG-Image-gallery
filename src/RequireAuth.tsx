@@ -9,7 +9,6 @@ interface Prop {
 
 const RequireAuth = ({ children, redirectTo }: Prop): JSX.Element => {
   const { currentUser, isLoading } = useAuth();
-  console.log(currentUser);
 
   if (isLoading) return <PageLoader />;
 

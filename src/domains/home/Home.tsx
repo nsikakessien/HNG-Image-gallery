@@ -2,6 +2,8 @@ import { useState } from "react";
 import UploadImage from "../../components/file-upload/UploadImage";
 import { useAppState } from "../../context/AppContext";
 import Toast from "../../components/toast/Toast";
+import { auth } from "../../firebase";
+import { useAuth } from "../../context/AuthContext";
 
 export interface ImageState {
   name: string;
@@ -9,6 +11,7 @@ export interface ImageState {
 }
 
 const Home = () => {
+  const { currentUser } = useAuth();
   const { state, dispatch } = useAppState();
   const [dragItemIndex, setDragItemIndex] = useState<number | null>(null);
   const [dragOverItemIndex, setDragOverItemIndex] = useState<number | null>(
@@ -50,10 +53,20 @@ const Home = () => {
     setDragOverItemIndex(null);
   };
 
+  const handleLogout = async () => {
+    if (currentUser) {
+      await auth.signOut();
+    }
+  };
+
   return (
     <>
-      <header className="p-6">
-        <h1 className="text-[#191717]">Responsive Image Gallery</h1>
+      <header className="p-6 flex justify-between items-center">
+        <h1 className="text-[#191717] text-[24px]">Responsive Image Gallery</h1>
+
+        <button className="border rounded-lg p-4" onClick={handleLogout}>
+          Sign Out
+        </button>
       </header>
 
       {state.imageError && (

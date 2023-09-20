@@ -1,12 +1,10 @@
-import { useState, useEffect } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
-import { useAuth } from "../../context/AuthContext";
 import Toast from "../../components/toast/Toast";
 
 const Login = () => {
-  const currentUser = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -16,18 +14,14 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
-      console.log(response);
+      if (response.user) {
+        navigate("/");
+      }
     } catch (error: unknown) {
       const newError = error as Error;
       setError(newError.message as string);
     }
   };
-
-  useEffect(() => {
-    if (currentUser) {
-      navigate("/");
-    }
-  }, [currentUser, navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#CCC8AA] to-[#F1EFEF]">
