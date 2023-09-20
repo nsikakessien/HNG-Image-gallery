@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../firebase";
 
-const AuthContext = createContext<firebase.User | null>(null);
+const AuthContext = createContext<unknown | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [currentUser, setCurrentUser] = useState<firebase.User | null>(null);
+  const [currentUser, setCurrentUser] = useState<unknown | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {

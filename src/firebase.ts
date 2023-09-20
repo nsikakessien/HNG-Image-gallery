@@ -7,7 +7,7 @@ import { getAuth } from "firebase/auth";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyDso7euCXN49xiawV0pLR_KSMRZjyEFVZo",
+  apiKey: import.meta.env.VITE_REACT_API_KEY,
   authDomain: "image-gallery-4c65b.firebaseapp.com",
   projectId: "image-gallery-4c65b",
   storageBucket: "image-gallery-4c65b.appspot.com",
