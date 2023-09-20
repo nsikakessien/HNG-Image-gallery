@@ -4,6 +4,7 @@ import { useAppState } from "../../context/AppContext";
 import Toast from "../../components/toast/Toast";
 import { auth } from "../../firebase";
 import { useAuth } from "../../context/AuthContext";
+import LazyLoad from "react-lazy-load";
 
 export interface ImageState {
   name: string;
@@ -89,12 +90,15 @@ const Home = () => {
               onDragEnd={handleDragEnd}
               onDrop={handleDrop}
             >
-              <img
-                src={image.url}
-                alt="uploaded Image"
-                className="w-full h-[300px] overflow-hidden border rounded-lg"
-                loading="lazy"
-              />
+              <LazyLoad height={300}>
+                <img
+                  src={image.url}
+                  alt="uploaded Image"
+                  className="w-full h-[300px] overflow-hidden border rounded-lg"
+                  loading="lazy"
+                />
+              </LazyLoad>
+
               <p className="font-bold">{image.name}</p>
             </div>
           ))}

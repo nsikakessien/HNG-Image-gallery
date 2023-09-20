@@ -10,6 +10,10 @@ const Login = () => {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [touchedName, setTouchedName] = useState(false);
+  const [touchedPassword, setTouchedPassword] = useState(false);
+  const [showErrorName, setShowErrorName] = useState(false);
+  const [showErrorPassword, setShowErrorPaswword] = useState(false);
 
   const signIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,10 +45,23 @@ const Login = () => {
               type="email"
               id="username"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
               name="username"
-              className="w-full border-2 border-gray-300 p-2 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+              onFocus={() => {
+                setTouchedName(true);
+                if (touchedPassword) {
+                  setShowErrorPaswword(true);
+                }
+              }}
+              className={`w-full border-2 border-gray-300 p-2 rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
+                touchedName && showErrorName && !email && "border-red-500"
+              }`}
             />
+            {touchedName && showErrorName && !email && (
+              <span className="text-red-500 mt-2">Required</span>
+            )}
           </div>
           <div className="mb-4">
             <label htmlFor="password" className="block text-[#191717]">
@@ -54,10 +71,26 @@ const Login = () => {
               type="password"
               id="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+              onFocus={() => {
+                setTouchedPassword(true);
+                if (touchedName) {
+                  setShowErrorName(true);
+                }
+              }}
               name="password"
-              className="w-full border-2 border-gray-300 p-2 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+              className={`w-full border-2 border-gray-300 p-2 rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
+                touchedPassword &&
+                showErrorPassword &&
+                !password &&
+                "border-red-500"
+              }`}
             />
+            {touchedPassword && showErrorPassword && !password && (
+              <span className="text-red-500 mt-2">Required</span>
+            )}
           </div>
           <div className="text-center flex justify-center">
             <button
