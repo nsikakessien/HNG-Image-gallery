@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
 import Toast from "../../components/toast/Toast";
+import { AiFillEye } from "react-icons/ai";
+import { AiFillEyeInvisible } from "react-icons/ai";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -10,6 +12,7 @@ const Login = () => {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [touchedName, setTouchedName] = useState(false);
   const [touchedPassword, setTouchedPassword] = useState(false);
   const [showErrorName, setShowErrorName] = useState(false);
@@ -67,27 +70,37 @@ const Login = () => {
             <label htmlFor="password" className="block text-[#191717]">
               Password
             </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-              onFocus={() => {
-                setTouchedPassword(true);
-                if (touchedName) {
-                  setShowErrorName(true);
-                }
-              }}
-              name="password"
-              className={`w-full border-2 border-gray-300 p-2 rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
-                touchedPassword &&
-                showErrorPassword &&
-                !password &&
-                "border-red-500"
-              }`}
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+                onFocus={() => {
+                  setTouchedPassword(true);
+                  if (touchedName) {
+                    setShowErrorName(true);
+                  }
+                }}
+                name="password"
+                className={`w-full border-2 border-gray-300 p-2 rounded-md focus:outline-none focus:ring focus:border-blue-300 ${
+                  touchedPassword &&
+                  showErrorPassword &&
+                  !password &&
+                  "border-red-500"
+                }`}
+              />
+              <div className="absolute top-4 right-4 cursor-pointer">
+                {!showPassword ? (
+                  <AiFillEye onClick={() => setShowPassword(true)} />
+                ) : (
+                  <AiFillEyeInvisible onClick={() => setShowPassword(false)} />
+                )}
+              </div>
+            </div>
+
             {touchedPassword && showErrorPassword && !password && (
               <span className="text-red-500 mt-2">Required</span>
             )}
