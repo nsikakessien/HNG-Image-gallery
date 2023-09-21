@@ -33,7 +33,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#CCC8AA] to-[#F1EFEF]">
-      {error && <Toast onClose={() => setError("")} />}
+      {error && <Toast message={error} onClose={() => setError("")} />}
       <div className="bg-white p-10 rounded-lg shadow-md backdrop-blur-md backdrop-opacity-30">
         <h2 className="text-2xl font-semibold mb-4 text-[#191717]">Login</h2>
         <form onSubmit={signIn}>
