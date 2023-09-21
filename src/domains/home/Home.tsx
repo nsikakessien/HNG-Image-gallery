@@ -63,7 +63,7 @@ const Home = () => {
 
   return (
     <>
-      <header className="p-6 flex justify-between items-center">
+      <header className="p-6 flex sm:justify-between items-center flex-col sm:flex-row">
         <h1 className="text-[#191717] text-[24px]">Responsive Image Gallery</h1>
 
         <button className="border rounded-lg p-4" onClick={handleLogout}>
