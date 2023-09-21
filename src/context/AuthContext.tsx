@@ -18,14 +18,26 @@ export const useAuth = () => {
 };
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const localStorageUserInformation =
+    JSON.parse(localStorage.getItem("currentUser") as string) || null;
+  const [currentUser, setCurrentUser] = useState<User | null>(
+    localStorageUserInformation
+  );
+  const [isLoading, setIsLoading] = useState(true); // Set isLoading to true initially
 
   useEffect(() => {
-    setIsLoading(true);
+    // Check if the user is already authenticated when the component mounts
+    const user = auth.currentUser;
+    if (user) {
+      setCurrentUser(user);
+    }
+
+    setIsLoading(false); // Set isLoading to false after checking for the current user
+
+    // Listen for changes in authentication state
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
-      setIsLoading(false);
+      localStorage.setItem("currentUser", JSON.stringify(user));
     });
 
     return () => unsubscribe();
@@ -39,7 +51,3 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 }
-
-// export function useAuth() {
-//   return useContext(AuthContext);
-// }

@@ -8,11 +8,15 @@ interface Prop {
 }
 
 const RequireAuth = ({ children, redirectTo }: Prop): JSX.Element => {
-  const { currentUser, isLoading } = useAuth();
+  const authObject = useAuth();
 
-  if (isLoading) return <PageLoader />;
+  if (authObject?.isLoading) return <PageLoader />;
 
-  return currentUser !== null ? children : <Navigate to={redirectTo} replace />;
+  return authObject?.currentUser !== null ? (
+    children
+  ) : (
+    <Navigate to={redirectTo} replace />
+  );
 };
 
 export default RequireAuth;

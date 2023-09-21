@@ -12,7 +12,7 @@ export interface ImageState {
 }
 
 const Home = () => {
-  const { currentUser } = useAuth();
+  const authObject = useAuth();
   const { state, dispatch } = useAppState();
   const [dragItemIndex, setDragItemIndex] = useState<number | null>(null);
   const [dragOverItemIndex, setDragOverItemIndex] = useState<number | null>(
@@ -55,8 +55,9 @@ const Home = () => {
   };
 
   const handleLogout = async () => {
-    if (currentUser) {
+    if (authObject?.currentUser) {
       await auth.signOut();
+      localStorage.removeItem("currentUser");
     }
   };
 
