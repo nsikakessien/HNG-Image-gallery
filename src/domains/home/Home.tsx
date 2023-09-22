@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UploadImage from "../../components/file-upload/UploadImage";
 import { useAppState } from "../../context/AppContext";
 import Toast from "../../components/toast/Toast";
@@ -15,6 +15,8 @@ const Home = () => {
   const authObject = useAuth();
   const { state, dispatch } = useAppState();
   const [dragItemIndex, setDragItemIndex] = useState<number | null>(null);
+  const [searchValue, setSearchValue] = useState("");
+  const [imagesToShow, setImagesToShow] = useState<ImageState[]>([]);
   const [dragOverItemIndex, setDragOverItemIndex] = useState<number | null>(
     null
   );
@@ -61,6 +63,13 @@ const Home = () => {
     }
   };
 
+  useEffect(() => {
+    const newImages = state.images.filter((image) =>
+      image.name.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setImagesToShow(newImages);
+  }, [searchValue, state.images]);
+
   return (
     <>
       <header className="p-6 flex sm:justify-between items-center flex-col sm:flex-row">
@@ -76,8 +85,15 @@ const Home = () => {
       )}
 
       <main className="p-6">
+        <input
+          type="text"
+          value={searchValue}
+          placeholder="Search For an Image"
+          onChange={(e) => setSearchValue(e.target.value)}
+          className="px-[6px] text-base py-[10px] border-[#666666] w-full border-2 mb-6 rounded-md focus:outline-none"
+        />
         <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-6">
-          {state.images.map((image, index) => (
+          {imagesToShow.map((image, index) => (
             <div
               className={`w-full border rounded-lg flex flex-col gap-6 p-4 cursor-pointer ${
                 dragItemIndex === index && "border-[#618264] opacity-20"
